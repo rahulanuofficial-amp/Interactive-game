@@ -101,22 +101,15 @@ const scoreEl = document.getElementById("score");
 const questionNumberEl = document.getElementById("question-number");
 const nextBtn = document.getElementById("next-btn");
 
-const resultContainer =
-document.getElementById("result-container");
-
-const quizContainer =
-document.getElementById("quiz-container");
-
-const finalScore =
-document.getElementById("final-score");
-
-const performance =
-document.getElementById("performance");
-
-const restartBtn =
-document.getElementById("restart-btn");
+const resultContainer = document.getElementById("result-container");
+const quizContainer = document.getElementById("quiz-container");
+const finalScore = document.getElementById("final-score");
+const performance = document.getElementById("performance");
+const restartBtn = document.getElementById("restart-btn");
 
 function loadQuestion(){
+
+    nextBtn.disabled = true;
 
     const q = questions[currentQuestion];
 
@@ -129,14 +122,15 @@ function loadQuestion(){
 
     q.options.forEach((option,index)=>{
 
-        const button =
-        document.createElement("button");
+        const button = document.createElement("button");
 
         button.textContent = option;
 
         button.classList.add("option");
 
-        button.addEventListener("click",()=>checkAnswer(index));
+        button.addEventListener("click",()=>{
+            checkAnswer(index);
+        });
 
         optionsEl.appendChild(button);
     });
@@ -144,8 +138,7 @@ function loadQuestion(){
 
 function checkAnswer(selected){
 
-    const correctAnswer =
-    questions[currentQuestion].answer;
+    const correctAnswer = questions[currentQuestion].answer;
 
     const optionButtons =
     document.querySelectorAll(".option");
@@ -170,8 +163,9 @@ function checkAnswer(selected){
         .classList.add("correct");
     }
 
-    scoreEl.textContent =
-    `Score: ${score}`;
+    scoreEl.textContent = `Score: ${score}`;
+
+    nextBtn.disabled = false;
 }
 
 function showResult(){
@@ -183,22 +177,25 @@ function showResult(){
     finalScore.textContent =
     `Final Score: ${score}/${questions.length}`;
 
+    const percentage =
+    Math.round((score / questions.length) * 100);
+
     if(score >= 13){
 
         performance.textContent =
-        "🏆 Excellent! Outstanding Performance";
+        `🏆 Excellent! Score: ${percentage}%`;
 
     }
     else if(score >= 8){
 
         performance.textContent =
-        "👍 Good Job! Keep Learning";
+        `👍 Good Job! Score: ${percentage}%`;
 
     }
     else{
 
         performance.textContent =
-        "📚 Keep Practicing and Improve";
+        `📚 Keep Practicing! Score: ${percentage}%`;
     }
 }
 
